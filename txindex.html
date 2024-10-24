@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20BuscarMais</title>
+    <!-- Link para o CSS do Bootstrap -->
+    <link rel="stylesheet" href="bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="fontawesome/css/all.min.css">
+<link rel="stylesheet" href="p-inicial.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="p-inicial-resp.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    #carousel {
+        overflow: ; /* Escondendo o conteúdo que sai do limite */
+        position: relative;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        background-color: ; /* Cor de fundo */
+    }
+
+    .card, .card2 {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end; /* Mantém o conteúdo no fundo */
+        text-align: center;
+        padding: 0 ;
+        box-sizing: border-box;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        backface-visibility: hidden; /* Oculta o verso da carta */
+        border: 1px solid rgba(31,51,133,0.8);
+    }
+
+    .card-content {
+        width: 100%;
+    background-color: ; /* Azul claro */
+        border-radius: 5px; /* Bordas arredondadas */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Espaça os elementos */
+        height: 100%; /* Para ocupar toda a altura */
+    }
+
+    .card-content img {
+        width: 90%;
+        height: auto;
+        max-height: 18rem; /* Limita a altura da imagem */
+        border-radius: 3px;
+        margin:0 auto; /* Centraliza a imagem */
+        display: block; /* Para que a imagem seja um bloco */
+        padding-top: 8px;
+    }
+
+.card-content h2 {
+    font: oblique bold 10pt 'Roboto', 'Open Sans', 'Lato', sans-serif;        
+    color: #fcb900; /* Cor do título */
+    margin: 0 auto; /* Remove margens */
+    padding: 0.3rem 0;
+    white-space: nowrap; /* Impede quebra de linha */
+    overflow: hidden; /* Oculta o texto que ultrapassa o contêiner */
+    text-overflow: ellipsis; /* Adiciona '...' ao final do texto que não cabe */
+    width: 90%;
+}
+.card-content p {
+    font: normal 10pt 'Roboto', 'Open Sans', 'Lato', sans-serif;        
+    color: #ccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Limita o texto a 2 linhas */
+    max-height: 2.8em; /* Ajuste fino para o número de linhas */
+    line-height: 1.2em;
+    text-align: left;
+    width: 90%;
+    margin: 0 auto;
+    word-break: break-word; /* Quebra de palavra para evitar transbordo */
+}
+.txt {
+    position: fixed; /* Fixa o elemento em relação à janela de visualização */
+    bottom: 0; /* Alinha o elemento à parte inferior da tela */
+    left: 0; /* Garante que o elemento comece a partir da esquerda */
+    width: 100%; /* Largura total da tela */
+    background-color: rgba(21, 36, 55, 0.7); /* Cor do fundo do texto */
+    color: white; /* Cor do texto */
+    padding: 5px 0 15px 0; /* Espaçamento interno */
+    text-align: center; /* Centraliza o texto */
+    margin: 0; /* Remove qualquer margem externa */
+    border-radius: 0 0 5px 5px; /* Bordas arredondadas */
+}
+    .hidden {
+        opacity: 0;
+        transform: scale(0.9); /* Efeito de redução para a carta oculta */
+    }
+
+    .visible {
+        opacity: 1;
+        transform: scale(1); /* Efeito de aumento para a carta visível */
+    }
+
+    .card-link {
+        text-decoration: none;
+        color: inherit; /* Mantém a cor do texto */
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Garantir que o conteúdo não seja escondido pelo header fixo */
+body {
+    padding-top: 60px; /* Ajuste o valor conforme a altura do header */
+    display: flex;
+  flex-direction: column;
+  background-color: #000;
+}
+
+/* Ajustar os estilos do conteúdo para não ter espaço em branco */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%; /* Garantir que o site ocupe toda a largura da tela */
+    overflow-x: hidden; /* Evitar rolagem horizontal */
+    overflow-y: auto; /* Permite a rolagem vertical */
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    
+}
+
+/* Ocultar a barra de rolagem em navegadores WebKit (Chrome, Safari) */
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Ocultar a barra de rolagem no Firefox */
+body {
+    scrollbar-width: none;
+}
+
+/* Resto do estilo para o site */
+div#site {
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+/* Background Video */
+.video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* RGBA Overlay */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark transparent overlay */
+    z-index: 1;
+}
+
+/* Header and Menu */
+header {
+    position: fixed; /* Alterar de relative para fixed */
+    top: 0; /* Manter o menu no topo */
+    left: 0; /* Garantir que o menu esteja alinhado à esquerda */
+    width: 96.5%; /* Ocupa toda a largura da tela */
+    padding: 5px 1% 5px 2.5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient(130deg, #000 83%, #fcb900 -50%);
+    box-shadow: 0 0.5px 1.5px #ccc7;
+    z-index: 200;
+}
+
+/* Logo */
+a.logo {
+    text-decoration: none;
+    width: 10%;
+    margin-left: 2%;
+}
+
+a.logo img {
+    width: 100%;
+    height: 3rem;
+
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    width:80%;
+}
+
+.nav-links a {
+    color: #fff;
+    font-size: 18px;
+    position: relative;
+    text-decoration: none;
+}
+
+.nav-links a svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
+}
+
+/* News Notification Badge */
+.news-badge {
+    position: absolute;
+    top: -0.45rem;
+    margin-left:-0.6rem;
+    color: #fff;
+    font-size: 9px;
+    padding: 0.3rem 0.2rem;
+    border-radius: 50%;
+    background-color: red;
+}
+
+/** Área dos blocos de conteúdo  */  
+#conteudo {
+    width: 100%;
+    padding: 10px 20px 5rem 20px;
+    box-sizing: border-box;
+    margin-top:5rem;
+    position: fixed;
+    overflow: scroll;
+    height: 90%;
+}
+
+#conteudo #bloco-btns {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: ;
+}
+
+#bloco-btns .c3 {
+    width: 32.5%; /* Ajuste conforme necessário para o layout */
+    aspect-ratio: 1 / 1; /* Garante que o elemento seja quadrado */
+    text-shadow: 
+        1px 1px 0 #fff, 
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff;
+}
+
+
+
+
+
+
+#conteudo #bloco-publ {
+    width:100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: yellow;
+    z-index: 50;
+    margin-top: ;
+    height: 50vh;
+}
+
+#bloco-publ .c2{
+    width: 48%; /* Inicialmente 100% para permitir flexbox responsivo */
+    height: 23rem; /* Ajuste a altura conforme necessário */
+    background-color: rgba(126, 146, 207, 0.808);
+        padding: 5px 10px;
+                border-radius: 5px;
+
+
+}
+
+
+.bloco {
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Alterado para sombra suave */
+    color: #02033d;
+    text-align: center;
+    transition: transform 0.6s ease-in-out, box-shadow 0.6s ease-in-out;
+    transform-style: preserve-3d;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none; /* Remove sublinhado dos links */
+    
+    z-index: 50;
+}
+
+
+
+
+.bloco:hover {
+    transform: rotateY(15deg); /* Menos rotação para maior visibilidade */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Aumenta a sombra ao passar o mouse */
+}
+
+
+
+
+
+
+.bloco1 {
+    background-color: rgba(255, 215, 0, 0.8); /* Amarelo ouro */
+}
+
+.bloco2 {
+    background-color: rgba(0, 191, 255, 0.8); /* Azul profundo */
+}
+
+.bloco3 {
+    background-color: rgba(255, 105, 180, 0.8); /* Rosa quente */
+}
+
+.bloco4 {
+    background-color: rgba(31,51,133,0.8); /* Verde limão */
+}
+
+.bloco5 {
+    background-color: rgba(255, 69, 0, 0.8); /* Vermelho laranja */
+}
+
+.bloco6 {
+    background-color: rgba(100, 149, 237, 0.8); /* Azul claro */
+}
+
+
+
+/* Flexbox responsivo */
+@media (max-width: 1068px) {
+    .bloco {
+        width: ;
+    }
+}
+
+.fas {
+    font-size: 50px;
+    color: #000;
+}
+
+/* CSS para o Rodapé */
+footer {
+    position: relative;
+    width: 96%;
+    padding: 20px 2%;
+    background-color:rgba(0,0,0,0.7) ; /* Fundo transparente muito escuro */
+    color: #fff;
+    text-align: center;
+    z-index: 2;
+    margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #ccc5;
+    border-width: 100%;
+}
+
+div#mt a{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font: oblique bold 12pt arial,helvetica,sans-serif;
+  text-decoration: none;
+}
+
+div#mt a span{
+  background-color: #fcb900;
+  color: #02033d;
+  padding: 5px 10px;
+  transform: skew(25deg);
+}
+
+
+div#mt a img{
+  width: 5rem;
+  height: 5rem;
+}
+
+
+.footer-links {
+    margin-top:1.5rem;
+}
+.footer-content p {
+    font:oblique bold 10pt arial,helvetica,sans-serif;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.footer-content p a{
+color: #00eeff;
+margin-left: 6px;
+}
+.footer-links a {
+    color: #fcb900;
+    text-decoration: none;
+
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Media Query para telas muito pequenas (260px a 320px) */
+@media screen and (min-width: 260px) and (max-width: 320px) {
+    .bloco i {
+        font-size: 18px; /* Tamanho do ícone */
+        margin-bottom: 12px;
+    }
+    
+    .bloco h3 {
+        font-size: 8pt; /* Tamanho do texto */
+    }
+}
+
+/* Media Query para telas pequenas (321px a 480px) */
+@media screen and (min-width: 321px) and (max-width: 480px) {
+    .bloco i {
+        font-size: 22px; /* Aumenta o tamanho do ícone */
+        margin-bottom: 15px;
+    }
+    
+    .bloco h3 {
+        font-size: 10pt; /* Tamanho do texto */
+    }
+}
+
+/* Media Query para telas médias (481px a 768px) */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .bloco i {
+        font-size: 26px; /* Aumenta ainda mais o tamanho do ícone */
+        margin-bottom: 18px;
+    }
+    
+    .bloco h3 {
+        font-size: 12pt; /* Tamanho do texto */
+    }
+}
+
+/* Media Query para telas grandes (769px e acima) */
+@media screen and (min-width: 769px) {
+    .bloco i {
+        font-size: 30px; /* Aumenta o tamanho do ícone significativamente */
+        margin-bottom: 20px;
+    }
+    
+    .bloco h3 {
+        font-size: 14pt; /* Tamanho do texto */
+    }
+}
+
+
+</style>
+
+
+
+   
+
+
+</head>
+<body>
+<div id="site">
+    <!-- Background Video -->
+    <video class="video-bg" src="videos/carro1.mp4" autoplay loop muted></video>
+
+    <!-- RGBA Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Header with Logo and Navigation Menu -->
+    <header>
+        <div class="nav-links">
+           <a href="index.html" title="Início">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-taxi-front-fill" viewBox="0 0 16 16" style="color:#fcb900; border-bottom:2px solid #fcb900;"> <path d="M6 1a1 1 0 0 0-1 1v1h-.181A2.5 2.5 0 0 0 2.52 4.515l-.792 1.848a.8.8 0 0 1-.38.404c-.5.25-.855.715-.965 1.262L.05 9.708a2.5 2.5 0 0 0-.049.49v.413c0 .814.39 1.543 1 1.997V14.5a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1.338c1.292.048 2.745.088 4 .088s2.708-.04 4-.088V14.5a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1.892c.61-.454 1-1.183 1-1.997v-.413q0-.248-.049-.49l-.335-1.68a1.8 1.8 0 0 0-.964-1.261.8.8 0 0 1-.381-.404l-.792-1.848A2.5 2.5 0 0 0 11.181 3H11V2a1 1 0 0 0-1-1zM4.309 4h7.382a.5.5 0 0 1 .447.276l.956 1.913a.51.51 0 0 1-.497.731c-.91-.073-3.35-.17-4.597-.17s-3.688.097-4.597.17a.51.51 0 0 1-.497-.731l.956-1.913A.5.5 0 0 1 4.309 4M4 10a1 1 0 1 1-2 0 1 1 0 0 1 2 0m10 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-9 0a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1"/> </svg></a>
+             
+             
+            <a href="minhaconta.html" title="Minha Conta"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+</svg></a>
+            <a href="notificacoes.html" title="Notificações"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+  <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+</svg><span class="news-badge">+99</span></a>
+            <a href="premios.html" title="Prémios" id=""><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-gift" viewBox="0 0 16 16">
+  <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A3 3 0 0 1 3 2.506zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43zM9 3h2.932l.023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0zM1 4v2h6V4zm8 0v2h6V4zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5z"/>
+</svg></a>
+            <a href="registros.html" id="Registros"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+  <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+</svg></a>
+            <a href="ajuda.html" title="Ajuda">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+  <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+  <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+</svg>        </div>
+                <a href="" class="logo"><img src="images/logo20b.png" alt="logo"></a>
+    </header>
+
+<div id="conteudo">
+    
+
+<div id="bloco-btns">
+    <a href="autochamada.html" class="bloco bloco1 c3" title="Chamar um Táxi Automaticamente">
+        <i class="fas fa-car"></i> <!-- Cor laranja intenso para Auto-Chamar -->
+        <h3>Auto-Chamar</h3>
+    </a>
+    <a href="taxiproximo.html" class="bloco bloco2 c3" title="Táxi Próximos">
+        <i class="fas fa-users"></i> <!-- Cor azul intenso para Próximos -->
+        <h3>Próximos</h3>
+    </a>
+    <a href="favoritos.html" class="bloco bloco3 c3" title="Favoritos">
+        <i class="fas fa-star"></i> <!-- Cor dourada sólida para Favoritos -->
+        <h3>Favoritos</h3>
+    </a>
+    
+    
+    <a href="favoritos.html" class="bloco bloco4 c3" title="Favoritos">
+        <i class="fas fa-star"></i> <!-- Cor dourada sólida para Favoritos -->
+        <h3>Táxi VIP</h3>
+    </a>
+    
+
+    
+    
+
+    
+    
+    
+    <a href="todosdaqui.html" class="bloco bloco5 c3">
+        <i class="fas fa-list"></i> <!-- Cor amarela sólida para Melhores -->
+        <h3>Todos d'Aqui</h3>
+    </a>
+    
+    
+    
+    <a href="agendamento.html" class="bloco bloco6 c3">
+        <i class="fas fa-calendar-check"></i> <!-- Cor verde limão para Agendamentos -->
+        <h3>Agendamentos</h3>
+    </a>
+</div>
+
+
+
+
+
+    <div id="bloco-publ">
+        
+        <div id="carousel" class="bloco c2">
+            <a class="card card-link" href="https://www.example.com/1" target="_blank">
+                <div class="card-content">
+                    <img src="images/c.jpg">
+    <div class="txt">
+                      <h2>Título da PublcidadePublcidadePublcidPPublcidadeublcidadeade 1</h2>
+                    <p>Descrição da publicidakkkk kkdepublicidakk kkkk depublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+                </div>
+            </a>
+            <a class="card card-link hidden" href="https://www.example.com/2" target="_blank">
+                <div class="card-content">
+                    <img src="images/e.jpg">
+    <div class="txt">
+                      <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+    </div>
+                </div>
+            </a>
+            <a class="card card-link hidden" href="https://www.example.com/3" target="_blank">
+                <div class="card-content">
+                    <img src="images/m1.jpg">
+    <div class="txt">
+                  <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+    </div>
+                </div>
+            </a>
+            <a class="card card-link hidden" href="https://www.example.com/4" target="_blank">
+                <div class="card-content">
+                    <img src="https://via.placeholder.com/300x200" alt="Publicidade 4">
+    
+    <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+    
+                </div>
+            </a>
+            <a class="card card-link hidden" href="https://www.example.com/5" target="_blank">
+                <div class="card-content">
+                    <img src="https://via.placeholder.com/300x200" alt="Publicidade 5">
+    
+    <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+    
+                </div>
+            </a>
+            
+                    <a class="card card-link hidden" href="https://www.example.com/5" target="_blank">
+                <div class="card-content">
+                    <img src="https://via.placeholder.com/300x200" alt="Publicidade 5">
+    
+    <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+                </div>
+            </a>
+    
+        </div>
+    
+    
+    
+    
+        
+                <div id="carousel2" class="bloco c2">
+            <a class="card2 card-link" href="https://www.example.com/1" target="_blank">
+                <div class="card-content">
+                    <img src="images/b.jpeg">
+    <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+                </div>
+            </a>
+            <a class="card2 card-link hidden" href="https://www.example.com/2" target="_blank">
+                <div class="card-content">
+                    <img src="images/d.jpeg">
+    <div class="txt">
+                      <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+    </div>
+                </div>
+            </a>
+            <a class="card2 card-link hidden" href="https://www.example.com/3" target="_blank">
+                <div class="card-content">
+                    <img src="images/m1.jpg">
+    <div class="txt">
+                  <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+    </div>
+                </div>
+            </a>
+            <a class="card2 card-link hidden" href="https://www.example.com/4" target="_blank">
+                <div class="card-content">
+                    <img src="https://via.placeholder.com/300x200" alt="Publicidade 4">
+    
+    <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+    
+                </div>
+            </a>
+            <a class="card2 card-link hidden" href="https://www.example.com/5" target="_blank">
+                <div class="card-content">
+                    <img src="https://via.placeholder.com/300x200" alt="Publicidade 5">
+    
+    <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+    
+                </div>
+            </a>
+            
+                    <a class="card2 card-link hidden" href="https://www.example.com/5" target="_blank">
+                <div class="card-content">
+                    <img src="https://via.placeholder.com/300x200" alt="Publicidade 5">
+    
+    <div class="txt">
+                      <h2>Título da Publcidade 1</h2>
+                    <p>Descrição da
+                    publicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrmpublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdepublicidakkkkkkdemrm
+                    </p>
+    </div>
+    
+                </div>
+            </a>
+    
+        </div>
+    
+        
+    </div>
+    
+    
+    
+    
+</div>
+</div>
+
+<!-- Rodapé -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  
+  document.addEventListener('DOMContentLoaded', () => {
+  const premio = document.getElementById('premio');
+  
+  // Define o tempo de início da animação em milissegundos
+  const delay = 2000; // 2 segundos
+
+  // Função para iniciar a animação
+  const startAnimation = () => {
+    premio.classList.add('animate');
+  };
+
+  // Inicia a animação após o tempo definido
+  setTimeout(startAnimation, delay);
+});
+</script>
+    <!-- Link para o JS do Bootstrap -->
+    <script src="bootstrap/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    
+    
+        <script src="pubArea.js"></script>
+
+</body>
+</html>
